@@ -1,0 +1,60 @@
+server:
+  port: 8089
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rag_kb
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+# ==================== AI 配置 ====================
+# 使用硅基流动 (SiliconFlow): Chat + Embedding 一个 Key 搞定
+# 注册获取 Key → https://siliconflow.cn
+#
+# 【安全提示】api-key 通过环境变量注入，不写在配置文件中
+#   方式一 (推荐): 复制 application-local.yml.example → application-local.yml 填入真实 key
+#   方式二: 设置系统环境变量 APP_AI_CHAT_API_KEY / APP_AI_EMBEDDING_API_KEY
+app:
+  ai:
+    chat:
+      api-key: ${APP_AI_CHAT_API_KEY:}
+      base-url: https://api.siliconflow.cn/v1
+      model-name: deepseek-ai/DeepSeek-V3
+      temperature: 0.7
+      max-tokens: 2000
+    embedding:
+      api-key: ${APP_AI_EMBEDDING_API_KEY:}
+      base-url: https://api.siliconflow.cn/v1
+      model-name: BAAI/bge-large-zh-v1.5
+      dimension: 1024
+    rag:
+      top-k: 5
+      similarity-threshold: 0.7
+      chunk-size: 500
+      chunk-overlap: 50
+
+# Swagger
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# Logging
+logging:
+  level:
+    com.example.rag: DEBUG
+    dev.langchain4j: INFO

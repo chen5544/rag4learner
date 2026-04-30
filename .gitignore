@@ -1,0 +1,23 @@
+# ====== Maven ======
+target/
+!target/maven-status/
+
+# ====== IDE ======
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ====== Sensitive Config ======
+.env
+application-local.yml
+**/application-local.yml
+src/main/resources/application-local.yml
+application-*.yml.tmp
+
+# ====== OS ======
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
